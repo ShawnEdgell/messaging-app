@@ -120,7 +120,7 @@
   }
 
   .messages {
-    max-height: calc(95vh - 200px); /* Adjust 200px based on the total height of other elements */
+    max-height: calc(90vh - 200px); /* Adjust 200px based on the total height of other elements */
     overflow-y: auto; /* Enables vertical scrolling */
   }
 
@@ -154,7 +154,7 @@
     display: flex;
     flex-direction: column;
     padding: 1rem 0;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 
   input[type="text"] {
