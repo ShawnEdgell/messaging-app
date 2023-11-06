@@ -1,11 +1,12 @@
 <script>
   import { db } from '../firebase.js';
   import { collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
 
   let name = '';
   let message = '';
   let messages = [];
+  let messagesEnd; // This will be the element we want to scroll into view
 
   const messagesCollectionRef = collection(db, 'messages');
 
@@ -17,6 +18,8 @@
         timestamp: new Date()
       });
       message = ''; // Clear the message input after sending
+      await tick(); // Wait for the DOM to update
+      scrollToBottom(); // Then scroll to the bottom
     }
   }
 
@@ -31,9 +34,8 @@
   }
 
   // Scroll to bottom function
-  function scrollToBottom(node) {
-    // This will be called when the element is added to the DOM and after each update.
-    node.scrollTop = node.scrollHeight;
+  function scrollToBottom() {
+    messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
 
   onMount(() => {
@@ -43,6 +45,7 @@
         id: doc.id,
         ...doc.data()
       })).reverse(); // Reverse the messages to display newest last
+      tick().then(scrollToBottom); // Ensure scrolling happens after the DOM updates
     });
 
     return unsubscribe;
@@ -50,7 +53,7 @@
 </script>
 
 <main>
-  <section class="messages" use:scrollToBottom>
+  <section class="messages">
     {#each messages as message, i (message.id)}
       {#if isNewDay(messages[i - 1], message)}
         <div class="date-marker">
@@ -60,15 +63,16 @@
       <div class="message-container">
         <p><strong>{message.name}</strong>: {message.message}</p>
         <div class="timestamp">
-        <small>
-          {new Date(message.timestamp?.seconds * 1000).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </small>
-      </div>
+          <small>
+            {new Date(message.timestamp?.seconds * 1000).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </small>
+        </div>
       </div>
     {/each}
+    <span bind:this={messagesEnd}></span>
   </section>
 
   <div class="input-form">
