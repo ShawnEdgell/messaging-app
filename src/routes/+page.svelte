@@ -78,7 +78,7 @@
   <div class="input-form">
     <input type="text" placeholder="Name" bind:value={name} />
     <input type="text" placeholder="Message" bind:value={message} />
-    <button on:click={sendMessage}>Send</button>
+    <button on:click={sendMessage}>Send Message</button>
   </div>
 </main>
 
@@ -111,7 +111,7 @@
 
   :global(body) {
     line-height: 1;
-    background-color: #eaeaea;
+    background-color: #eceff2;
     font-family: 'Courier New', Courier, monospace;
     color: #333;
     padding: 2rem;
@@ -155,27 +155,31 @@
     flex-direction: column;
     padding: 1rem 0;
     gap: 0.5rem;
+    align-items: center;
   }
 
   input[type="text"] {
     padding: 0.5rem;
     border: 2px solid #333;
-    border-radius: 8px;
-    background-color: transparent;
+    border-radius: 5px;
+    background-color: white;
+    width: 96%;
   }
 
   button {
-    background-color: #f2f2f2;
-    border: 3px solid #333;
+    color: white;
+    background-color: #16161a;
+    border: 3px solid #16161a;
     padding: 0.5rem 1rem;
     font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    border-radius: 8px;
+    border-radius: 5px;
   }
 
   button:hover {
-    background-color: #ddd;
+    background-color: #333;
   }
 
   .timestamp {
